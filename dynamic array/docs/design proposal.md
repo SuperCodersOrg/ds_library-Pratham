@@ -140,6 +140,7 @@ int currentCapacity;
 - **currentCapacity**
   - Total number of elements the array can store before resizing.
 
+<img width="877" height="1280" alt="image" src="https://github.com/user-attachments/assets/dc97eb3e-7bd8-4a43-b85a-92d263cd7e8d" />
 
 
 ---
