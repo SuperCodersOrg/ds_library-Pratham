@@ -3,6 +3,10 @@
 # Phase 0 – Design Proposal for Dynamic Arrays
 
 ---
+# Dynamic Arrays
+A dynamic array is a flexible list that automatically grows or shrinks in size as you add or remove data.
+Unlike standard fixed arrays, when it runs out of space, it automatically allocates a larger block of memory and copies the data over.
+It gives the freedom of a flexible size and the fast speed of index-based searching.
 
 # Section 1 – Public API
 
@@ -20,17 +24,20 @@ Default: DynamicArray();
 
 ```cpp
 void push(int value);
+
 ```
 
 - Inserts a value at the end of the array.
-
+- return type: void
+- paramter:int
 ```cpp
 bool remove(int index);
+
 ```
 
 - Removes the element at the specified index.
-- Returns `true` if the operation is successful.
-- Returns `false` if the index is invalid.
+- return type: boolean
+- paramter:int
 
 ```cpp
 int get(int index);
@@ -38,6 +45,8 @@ int get(int index);
 
 - Returns the element stored at the given index.
 - Handles invalid index appropriately.
+- return type: int
+- paramter:int
 
 ```cpp
 bool insert(int index, int value);
@@ -46,18 +55,24 @@ bool insert(int index, int value);
 - Inserts a value at the specified index.
 - Returns `true` if insertion is successful.
 - Returns `false` if the index is invalid.
+- return type: boolean
+- paramter:int,int
 
 ```cpp
 int size();
 ```
 
 - Returns the current number of elements stored in the array.
+- return type: int
+- paramter:no parameters
 
 ```cpp
 int capacity();
 ```
 
 - Returns the current capacity of the array.
+- return type: int 
+- paramter: no parameters
 
 ```cpp
 void resize();
@@ -68,16 +83,24 @@ void resize();
 - Copies all existing elements.
 - Deletes the old array.
 - Updates the internal pointer.
+- return type: void
+- paramter:no parameters
 
 **Resize Factor:** `2`
 
+-resize factor is the number by which the array's capacity is increased when it becomes full.
+
+-array size would be updated logarithmically with resize factor 2 it maintains the balance between frequent resizings and memory usage. 
+
 ```cpp
 bool isEmpty();
+
 ```
 
 - Returns `true` if the array contains no elements.
 - Otherwise returns `false`.
-
+- return type: boolean
+- paramter:no parameters
 ---
 
 ## Rule of Three
@@ -223,13 +246,13 @@ The `currentSize` variable is updated whenever an element is inserted or removed
 
 The following design decisions were made while designing the Dynamic Array.
 
-## 1. Contiguous Memory Allocation
+### 1. Contiguous Memory Allocation
 
 The Dynamic Array will use a contiguous block of dynamically allocated memory to store all elements. This design was chosen because contiguous memory allows direct index-based access using pointer arithmetic, resulting in constant-time random access (O(1)). Although resizing requires copying all elements to a new memory block, the benefit of fast element access outweighs this occasional cost.
 
 ---
 
-## 2. Separate Size and Capacity Variables
+### 2. Separate Size and Capacity Variables
 
 The implementation maintains two separate variables:
 
@@ -240,7 +263,7 @@ Keeping these values separate allows the program to determine instantly whether 
 
 ---
 
-## 3. Dynamic Resizing Strategy
+### 3. Dynamic Resizing Strategy
 
 The array will be resized only when the current size becomes equal to the capacity. Instead of increasing the capacity by a fixed amount, the capacity will be doubled (2×) whenever resizing occurs.
 
@@ -248,7 +271,7 @@ The doubling strategy reduces the number of expensive resize operations and prov
 
 ---
 
-## 4. Deep Copy Instead of Shallow Copy
+### 4. Deep Copy Instead of Shallow Copy
 
 Since the Dynamic Array allocates memory dynamically on the heap, the default copy constructor and assignment operator would perform a shallow copy, causing multiple objects to share the same memory.
 
@@ -256,13 +279,15 @@ To avoid problems such as memory leaks, dangling pointers, and double deletion, 
 
 ---
 
-## 5. Error Handling
+### 5. Error Handling
 
 Operations such as `get()`, `insert()`, and `remove()` require a valid index. If an invalid index is provided, the operation will fail safely instead of accessing invalid memory.
 
 Methods that modify the array (`insert()` and `remove()`) return a boolean value indicating whether the operation was successful.
 
 ---
+### 6. Use of malloc() & calloc()
+Initially i will be using malloc for dynamic memory allocation as intructed and if i encounter any error then i will consider alternatives like calloc or as required.
 
 ## Alternatives Considered
 
@@ -302,4 +327,3 @@ The chosen design provides several advantages:
 
 - Inserting or removing elements from the middle requires shifting elements, resulting in O(n) time complexity.
 - Resizing temporarily requires additional memory and copying of all existing elements.
-
