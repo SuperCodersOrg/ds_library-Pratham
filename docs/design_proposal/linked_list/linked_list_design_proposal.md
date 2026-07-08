@@ -56,7 +56,7 @@ Parameterized: LinkedList(T value);
 - Creates a Linked List containing a single node.
 - Allocates memory for one node.
 - Stores the given value in the node.
-- Makes the newly created node the head of the list.
+- Makes the newly created node both the head and the tail of the Linked List.
 - Initializes the current size to `1`.
 - although its not necessarily needed as insertFront() will itself handle first insertion
 
@@ -121,13 +121,34 @@ void print();
 
 ---
 
-## Exception Handling
+---
 
-Instead of returning status values for invalid operations, the Linked List will use **C++ Exception Handling** wherever appropriate.
+## Iterator Operator Overloading
 
-Operations such as `insert()` and the parameterized constructor  may throw exceptions when invalid arguments are supplied.
+To support traversal similar the Linked List iterator will overload the following operators.
 
-The implementation will use the **try–throw–catch** mechanism to detect and handle errors gracefully. This approach separates normal program execution from error handling and provides meaningful error messages without causing undefined behavior.
+### Dereference Operator
+
+```cpp
+T& operator*();
+```
+
+- Returns the data stored in the current node.
+- Allows direct access to the value of the node currently pointed to by the iterator.
+
+---
+
+### Prefix Increment Operator
+
+```cpp
+Iterator& operator++();
+```
+
+- Advances the iterator to the next node.
+- Returns the updated iterator.
+- Executes in **O(1)** time.
+
+
 
 ---
 
@@ -154,10 +175,11 @@ LinkedList(const LinkedList& other);
 ```
 
 - Creates a deep copy of another Linked List.
-- Allocates new memory for every node.
+- Traverses the source Linked List from head to tail.
+- Dynamically allocates a separate node for every node in the source list.
 - Copies each node individually while preserving the order of elements.
-- Prevents shallow copy problems.
-
+- Updates both the head and tail pointers of the newly created list.
+- Prevents shallow copy problems by ensuring both Linked List objects own independent memory.
 ---
 
 ### Copy Assignment Operator
@@ -166,8 +188,9 @@ LinkedList(const LinkedList& other);
 LinkedList& operator=(const LinkedList& other);
 ```
 
-- Frees previously allocated nodes.
-- Allocates new memory.
+- Traverses the source Linked List.
+- Allocates new memory for every node.
+- Updates both the head and tail pointers.
 - Performs a deep copy of all nodes.
 - Prevents memory leaks, shallow copies, dangling pointers, and double deletion.
 
@@ -187,8 +210,8 @@ The Linked List class will contain the following private data members:
 template <typename T>
 struct Node
 {
-    T data;
-    Node<T>* next;
+  T data;
+  Node<T>*next;
 };
 ```
 
@@ -198,6 +221,7 @@ struct Node
 
 ```cpp
 Node<T>* head;
+Node<T>* tail;
 int currentSize;
 ```
 
@@ -213,105 +237,36 @@ int currentSize;
   - Updated whenever a node is inserted or deleted.
   - Allows the `size()` function to execute in **O(1)** time without traversing the list.
 
+- **tail**
+    - Pointer to the last node of the Linked List.
+    - Stores the address of the last node.
+    - If the list is empty, it stores `nullptr`.
+    - Updated whenever the last node changes.
+
 ---
 
 ## Memory Layout
 
+<img width="1792" height="2390" alt="image" src="https://github.com/user-attachments/assets/20ca9ff0-8e42-4e6b-ab45-90542b100873" />
 
 ---
+
 
 # Section 3 – Complexity Analysis
 
-## insertFront()
+| Operation | Best Case | Average Case | Worst Case | Reason |
+| :-------- | :-------: | :----------: | :--------: | :----- |
+| **insertFront()** | O(1) | O(1) | O(1) | A new node is created and inserted at the beginning by updating the head pointer. No traversal is required. |
+| **deleteFront()** | O(1) | O(1) | O(1) | The first node is removed by updating the head pointer. No traversal is required. |
+| **insert()** | O(1) | O(n) | O(n) | Inserting at the beginning (`index == 0`) or at the end (`index == currentSize`) requires only pointer manipulation. Otherwise, traversal is required to reach the insertion position before updating pointers. |
+| **search()** | O(1) | O(n) | O(n) | The best case occurs when the value is found in the first node. Otherwise, nodes are traversed sequentially until the value is found or the end of the list is reached. |
+| **size()** | O(1) | O(1) | O(1) | Returns the stored `currentSize` variable without traversing the Linked List. |
+| **print()** | O(n) | O(n) | O(n) | Every node must be visited sequentially to display all stored elements. |
+| **Destructor** | O(n) | O(n) | O(n) | Traverses the entire Linked List and deallocates every dynamically allocated node. |
+| **Copy Constructor** | O(n) | O(n) | O(n) | Traverses the source Linked List and allocates a separate node for every element while preserving their order. |
+| **Copy Assignment Operator** | O(n) | O(n) | O(n) | Frees the existing nodes, traverses the source Linked List, allocates new nodes, and performs a deep copy of every element. |
 
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(1) | A new node is created and inserted at the beginning by updating the head pointer. |
-| Average | O(1) | No traversal is required; only pointer manipulation is performed. |
-| Worst | O(1) | The operation always inserts directly at the front of the list. |
-
----
-
-## deleteFront()
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(1) | The first node is removed by updating the head pointer. |
-| Average | O(1) | Only the head pointer changes; no traversal is required. |
-| Worst | O(1) | Removing the first node always requires constant-time pointer updates. |
-
----
-
-## insert()
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(1) | Inserting at index `0` is equivalent to `insertFront()` and requires no traversal. |
-| Average | O(n) | Approximately half of the list must be traversed before reaching the insertion position. |
-| Worst | O(n) | Inserting near the end requires traversing almost the entire list before updating pointers. |
-
----
-
-## search()
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(1) | The required value is found in the first node. |
-| Average | O(n) | On average, about half of the nodes are traversed before the value is found. |
-| Worst | O(n) | The value is located in the last node or does not exist, requiring traversal of the entire list. |
-
----
-
-## size()
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(1) | Returns the stored `currentSize` variable. |
-| Average | O(1) | No traversal or computation is required. |
-| Worst | O(1) | Direct access to the stored size variable. |
-
-The `currentSize` variable is updated whenever a node is inserted or deleted.
-
----
-
-## print()
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(n) | Every node must be visited and displayed. |
-| Average | O(n) | Complete traversal of the Linked List is required. |
-| Worst | O(n) | Every node is traversed and printed. |
-
----
-
-## Destructor
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(n) | Every dynamically allocated node must be deallocated before the object is destroyed. |
-| Average | O(n) | The destructor traverses the complete list and frees each node. |
-| Worst | O(n) | Every node is visited exactly once and deallocated. |
-
----
-
-## Copy Constructor
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(n) | Every node from the source list is copied into newly allocated memory. |
-| Average | O(n) | Deep copying requires traversal of the entire Linked List. |
-| Worst | O(n) | All nodes are duplicated while preserving their order. |
-
----
-
-## Copy Assignment Operator
-
-| Case | Complexity | Reason |
-| :--- | :--------: | :----- |
-| Best | O(n) | Existing nodes are deleted and new nodes are allocated and copied. |
-| Average | O(n) | The current list is destroyed and a deep copy of the source list is created. |
-| Worst | O(n) | Every node is deallocated and recreated during the assignment operation. |
-
+The `currentSize` variable is updated whenever a node is inserted or deleted, allowing the `size()` operation to execute in **O(1)** time.
 
 # Section 4 – Design Decisions
 
@@ -319,25 +274,7 @@ The following design decisions were made while designing the Linked List.
 
 ---
 
-## 1. Linked Node Structure
-
-### Decision
-
-The Linked List will store elements as individually allocated nodes connected using pointers rather than storing all elements in contiguous memory.
-
-This design allows the list to grow dynamically without requiring resizing or copying of existing elements during insertion.
-
-### Alternative Considered
-
-A **Dynamic Array** was considered because it provides constant-time random access to elements.
-
-### Reason for Rejection
-
-A Dynamic Array requires shifting elements when inserting or deleting from the beginning or middle of the structure. It also requires resizing when the allocated capacity becomes full. Since the primary objective of a Linked List is efficient insertion and deletion without moving existing elements, a linked structure was considered more suitable.
-
----
-
-## 2. Separate Size Variable
+## 1. Separate Size Variable
 
 ### Decision
 
@@ -357,7 +294,7 @@ Traversing the list every time the size is required would increase the complexit
 
 ---
 
-## 3. Singly Linked List
+## 2. Singly Linked List
 
 ### Decision
 
@@ -371,29 +308,12 @@ A **Doubly Linked List**.
 
 ### Reason for Rejection
 
-A Doubly Linked List stores both **next** and **previous** pointers in every node, increasing memory consumption. Since the proposed API does not require backward traversal, the additional pointer provides little benefit while increasing implementation complexity.
+A Doubly Linked List stores both **next** and **previous** pointers in every node, increasing memory consumption.And for now i am not does not considering backward traversal so the additional pointer so i dont require previous for now.
+
 
 ---
 
-## 4. Deep Copy Instead of Shallow Copy
-
-### Decision
-
-The Linked List follows the **Rule of Three** by implementing a destructor, copy constructor, and copy assignment operator.
-
-Each copied object owns its own dynamically allocated nodes through **deep copying**.
-
-### Alternative Considered
-
-Using the compiler-generated copy constructor and assignment operator (shallow copy).
-
-### Reason for Rejection
-
-A shallow copy causes multiple Linked List objects to point to the same nodes, leading to dangling pointers, double deletion, memory corruption, and undefined behaviour.
-
----
-
-## 5. Generic Programming Using Templates
+## 3. Generic Programming Using Templates
 
 ### Decision
 
@@ -409,25 +329,10 @@ Implementing the Linked List using a fixed data type such as `int`.
 
 Using a fixed data type restricts the implementation to integers only. Any change in the stored data type would require rewriting the class. Templates make the implementation reusable and type-independent.
 
----
-
-## 6. Exception Handling
-
-### Decision
-
-Invalid operations such as inserting at an invalid index will be handled using **C++ exception handling** (`try`, `throw`, and `catch`).
-
-### Alternative Considered
-
-Returning boolean values (`true` or `false`) to indicate success or failure.
-
-### Reason for Rejection
-
-A boolean value only indicates whether an operation succeeded or failed but does not explain why it failed. Exception handling provides meaningful error information while keeping the API cleaner and separating normal program execution from error handling.
 
 ---
 
-## 7. Memory Allocation using malloc()
+## 4. Memory Allocation using malloc()
 
 ### Decision
 
