@@ -1,6 +1,8 @@
 #ifndef HASH_MAP_H
 #define HASH_MAP_H
 
+#include <cstddef>
+
 template <typename Key, typename Value>
 class HashMap
 {
@@ -31,6 +33,7 @@ private:
     // Hash Functions
     size_t hashKey(const Key& key) const;
     size_t hashBytes(const void* data, size_t size) const;
+    
 
     // Helper Functions
     Node* findNode(const Key& key) const;
