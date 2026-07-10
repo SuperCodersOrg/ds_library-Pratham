@@ -106,7 +106,7 @@ int capacity();
 void resize();
 ```
 
-- Called automatically whenever `size == capacity`.
+- Called automatically whenever at the start of insertion `size == capacity`.
 - Creates a larger array.
 - Copies all existing elements.
 - Deletes the old array.

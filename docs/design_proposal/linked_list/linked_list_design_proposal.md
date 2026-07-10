@@ -125,7 +125,7 @@ void print();
 
 ## Iterator Operator Overloading
 
-To support traversal similar the Linked List iterator will overload the following operators.
+To support traversal similar to the array the Linked List iterator will overload the following operators.
 
 ### Dereference Operator
 
