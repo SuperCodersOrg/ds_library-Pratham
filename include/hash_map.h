@@ -1,6 +1,7 @@
 #ifndef HASH_MAP_H
 #define HASH_MAP_H
 
+#include "hash_algorithm.h"
 #include <cstddef>
 
 template <typename Key, typename Value>
@@ -67,6 +68,6 @@ public:
 };
 
 
-#include "hash_map.tpp"
+#include "../src/hashmap/hash_map_v2.tpp"
 
 #endif
