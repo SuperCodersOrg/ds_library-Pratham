@@ -1,6 +1,7 @@
 #ifndef HASH_MAP_H
 #define HASH_MAP_H
 
+// #include "dynamic_array.h"
 #include "hash_algorithm.h"
 #include <cstddef>
 
@@ -16,8 +17,7 @@ private:
         Node* next;
 
         Node(const Key& key, const Value& value)
-            : key(key), value(value), next(nullptr)
-        {
+            : key(key), value(value), next(nullptr){
         }
     };
 
@@ -27,6 +27,7 @@ private:
 
     // Data Members
     Node** buckets;
+    // DynamicArray<Node*> buckets;
     int bucketCount;
     int currentSize;
     float maxLoadFactor;
