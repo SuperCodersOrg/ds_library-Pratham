@@ -66,6 +66,7 @@ public:
     float loadFactor() const;
 };
 
+
 #include "hash_map.tpp"
 
 #endif

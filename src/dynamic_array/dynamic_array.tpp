@@ -20,11 +20,9 @@ DynamicArray<T>::DynamicArray(){
 //parameterized constructor with user defined capacity
 template<typename T>
 DynamicArray<T>::DynamicArray(int initialCapacity){
-    if(initialCapacity <= 0)
-    {
+    if(initialCapacity <= 0){
         throw std::invalid_argument("Invalid Capacity");
     }
-
     currentSize = 0;
     currentCapacity = initialCapacity;
 

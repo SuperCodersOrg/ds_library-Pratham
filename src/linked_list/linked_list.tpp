@@ -11,6 +11,7 @@ LinkedList<T>::LinkedList(){
     currentSize = 0;
 }
 
+//parameterized constructor
 template<typename T>
 LinkedList<T>::LinkedList(T value){
     Node* newNode = (Node*) malloc(sizeof(Node));
