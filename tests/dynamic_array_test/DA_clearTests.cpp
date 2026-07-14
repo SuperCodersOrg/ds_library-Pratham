@@ -65,3 +65,39 @@ TEST_F(DynamicArrayTest, ClearString)
     EXPECT_TRUE(temp.isEmpty());
     EXPECT_EQ(temp.size(), 0);
 }
+
+TEST_F(DynamicArrayTest, ClearDefaultCapacity)
+{
+    DynamicArray<int> temp;
+
+    int initialCap = temp.capacity();
+
+    for(int i = 0; i < 20; i++)
+        temp.push(i);
+
+    EXPECT_GT(temp.capacity(), initialCap);
+
+    temp.clear();
+
+    EXPECT_EQ(temp.size(), 0);
+    EXPECT_TRUE(temp.isEmpty());
+    EXPECT_EQ(temp.capacity(), initialCap);
+}
+
+TEST_F(DynamicArrayTest, ClearCustomCapacity)
+{
+    DynamicArray<int> temp(10);
+
+    int initialCap = temp.capacity();
+
+    for(int i = 0; i < 25; i++)
+        temp.push(i);
+
+    EXPECT_GT(temp.capacity(), initialCap);
+
+    temp.clear();
+
+    EXPECT_EQ(temp.size(), 0);
+    EXPECT_TRUE(temp.isEmpty());
+    EXPECT_EQ(temp.capacity(), initialCap);
+}

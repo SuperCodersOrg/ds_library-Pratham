@@ -70,7 +70,11 @@ add_executable(runTests
     # tests/dynamic_array_test/DA_isemptyTests.cpp
     # tests/dynamic_array_test/DA_capacityTests.cpp
     # tests/dynamic_array_test/DA_getTests.cpp
-    tests/dynamic_array_test/DA_clearTests.cpp
+    # tests/dynamic_array_test/DA_clearTests.cpp
+    # tests/dynamic_array_test/DA_operator[]Tests.cpp
+    # tests/dynamic_array_test/DA_resizeTests.cpp
+    tests/dynamic_array_test/DA_assignmentOpOverloadingTests.cpp
+    # tests/dynamic_array_test/DA_copyconstructorTests.cpp
 
 )
 

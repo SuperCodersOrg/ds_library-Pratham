@@ -1,4 +1,3 @@
-#include "collections-library\include\dynamic_array.h"
 #include <cstdlib>      // so that we can use malloc, free
 #include <new>          // for using placement new
 #include <stdexcept>     // to handle exceptions
@@ -9,6 +8,7 @@ template<typename T>
 DynamicArray<T>::DynamicArray(){
     currentSize = 0;
     currentCapacity = 4;
+    initialCapacity = 4;
 
     arr = (T*)malloc(sizeof(T) * currentCapacity);
 
@@ -23,13 +23,35 @@ DynamicArray<T>::DynamicArray(int initialCapacity){
     if(initialCapacity <= 0){
         throw std::invalid_argument("Invalid Capacity");
     }
+    
     currentSize = 0;
     currentCapacity = initialCapacity;
+    this->initialCapacity = initialCapacity;
 
     arr = (T*)malloc(sizeof(T) * currentCapacity);
 
     if(arr == nullptr){
         throw std::bad_alloc();
+    }
+}
+
+//parameterized constructor to support DynamicArray<int> arr(5, 100);
+template<typename T>
+DynamicArray<T>::DynamicArray(int size, const T& value){
+    if(size <= 0){
+        throw std::invalid_argument("Invalid Size");
+    }
+    currentSize = size;
+    currentCapacity = size;
+    initialCapacity = size;
+
+    arr = (T*)malloc(sizeof(T) * currentCapacity);
+
+    if(arr == nullptr){
+        throw std::bad_alloc();
+    }
+    for(int i = 0; i < currentSize; i++){
+        new(&arr[i]) T(value);
     }
 }
 
@@ -53,6 +75,7 @@ template<typename T>
 DynamicArray<T>::DynamicArray(const DynamicArray& other){
     currentSize = other.currentSize;
     currentCapacity = other.currentCapacity;
+    initialCapacity = other.initialCapacity;
     arr = (T*)malloc(sizeof(T) * currentCapacity);
     if(arr == nullptr){
         throw std::bad_alloc();
@@ -75,6 +98,7 @@ DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray& other){
     arr = nullptr;
     currentSize = other.currentSize;
     currentCapacity = other.currentCapacity;
+    initialCapacity = other.initialCapacity;
     arr = (T*)malloc(sizeof(T) * currentCapacity);
     if(arr == nullptr){
         throw std::bad_alloc();
@@ -113,7 +137,7 @@ void DynamicArray<T>::resize(){
 
 //append at end 
 template<typename T>
-void DynamicArray<T>::push(T value){
+void DynamicArray<T>::push(const T& value){
     if(currentSize == currentCapacity){
         resize();
     }
@@ -123,7 +147,7 @@ void DynamicArray<T>::push(T value){
 
 //insert at index
 template<typename T>
-void DynamicArray<T>::insert(int index, T value){
+void DynamicArray<T>::insert(int index,const T& value){
     if(index < 0 || index > currentSize){
         throw std::out_of_range("Invalid Index");
     }
@@ -141,6 +165,7 @@ void DynamicArray<T>::insert(int index, T value){
 //remove 
 template<typename T>
 void DynamicArray<T>::remove(int index){
+
     if(index < 0 || index >= currentSize){
         throw std::out_of_range("Invalid Index");
     }
@@ -157,28 +182,47 @@ void DynamicArray<T>::remove(int index){
 
 //get
 template<typename T>
-T DynamicArray<T>::get(int index){
+T DynamicArray<T>::get(int index) const{
     if(index < 0 || index >= currentSize){
         throw std::out_of_range("Invalid Index");
     }
     return arr[index];
 }
 
+//operator []
+template<typename T>
+T& DynamicArray<T>::operator[](int index){
+    if(index < 0 || index >= currentSize){
+        throw std::out_of_range("Invalid Index");
+    }
+
+    return arr[index];
+}
+
+template<typename T>
+const T& DynamicArray<T>::operator[](int index) const{
+    if(index < 0 || index >= currentSize){
+        throw std::out_of_range("Invalid Index");
+    }
+
+    return arr[index];
+}
+
 //size
 template<typename T>
-int DynamicArray<T>::size(){
+int DynamicArray<T>::size() const{
     return currentSize;
 }
 
 //capacity
 template<typename T>
-int DynamicArray<T>::capacity(){
+int DynamicArray<T>::capacity() const{
     return currentCapacity;
 }
 
 //isempty
 template<typename T>
-bool DynamicArray<T>::isEmpty(){
+bool DynamicArray<T>::isEmpty() const{
     return currentSize == 0;
 }
 
@@ -188,7 +232,16 @@ void DynamicArray<T>::clear(){
     for(int i = 0; i < currentSize; i++){
         arr[i].~T();
     }
+    free(arr);
+    arr = nullptr;
+    currentCapacity = initialCapacity;
     currentSize = 0;
+    arr = (T*)malloc(sizeof(T) * currentCapacity);
+    if(arr == nullptr){
+        throw std::bad_alloc();
+    }
+    
+    
 }
 
 
