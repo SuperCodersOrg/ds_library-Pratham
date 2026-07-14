@@ -62,8 +62,16 @@ enable_testing()
 include_directories(include)
 
 add_executable(runTests
-    tests/dynamic_array_test/DA_constructorTests.cpp
-    tests/dynamic_array_test/DA_pushTests.cpp
+    # tests/dynamic_array_test/DA_constructorTests.cpp
+    # tests/dynamic_array_test/DA_pushTests.cpp
+    # tests/dynamic_array_test/DA_insertTests.cpp
+    # tests/dynamic_array_test/DA_removeTests.cpp 
+    # tests/dynamic_array_test/DA_sizeTests.cpp
+    # tests/dynamic_array_test/DA_isemptyTests.cpp
+    # tests/dynamic_array_test/DA_capacityTests.cpp
+    # tests/dynamic_array_test/DA_getTests.cpp
+    tests/dynamic_array_test/DA_clearTests.cpp
+
 )
 
 target_include_directories(runTests PRIVATE include)
