@@ -125,6 +125,46 @@ completed the test cases for dynamic array 's methods successfully and tested th
 
 
 
+**date:14th july**
+
+duration:1 hour
+
+goal:write the test cases for different methods of linked list 
+
+what i did:
+
+i have completed and tested the test cases for following methods of linked list :
+- Constructor
+- insertBack()
+- size()
+- search()
+- isEmpty()
+- deleteFront()
+- remove()
+- insert(int index, T value)
+- find() (both const and non-const)
+- print()
+- clear()
+- Copy Constructor
+- Assignment Operator (operator=)
+
+problem encountered:
+i was trying to test run test in pairs or 3 together at once so when i ran remove and delete front it gave me error 
+
+- error was something like this i have not pasted the complete error here 
+    /usr/bin/ld: CMakeFiles/runTests.dir/tests/linked_list_test/LL_removeTests.cpp.o:(.bss+0x0): multiple definition of `LinkedListDeleteFrontTest_EmptyList_Test::test_info_'; CMakeFiles/runTests.dir/tests/linked_list_test/LL_deletefrontTests.cpp.o:(.bss+0x0): first defined here
+    /usr/bin/ld: CMakeFiles/runTests.dir/tests/linked_list_test/LL_removeTests.cpp.o: in function `LinkedListDeleteFrontTest_EmptyList_Test::TestBody()':
+    LL_removeTests.cpp:(.text+0xfa8): multiple definition of `LinkedListDeleteFrontTest_MultipleDeletes_Test::TestBody()'; CMakeFiles/runTests.dir/tests/linked_list_test/LL_deletefrontTests.cpp.o:LL_deletefrontTests.cpp:(.text+0xfa8): first defined here
+    collect2: error: ld returned 1 exit status
+- this means i have some redundant test cases of delete in remove too so i have to run the test cases for both of these methods separately
+
+which is then verified by gtest and valgrind for correction and memory leakage
+
+outcome:
+implemented the test cases succesfully for linked list 
+
+
+
 
 
 
