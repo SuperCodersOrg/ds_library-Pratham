@@ -28,14 +28,19 @@ public:
     LinkedList& operator=(const LinkedList& other);
 
     void insertFront(T value);
+    void insertBack(T value);
     void deleteFront();
     void insert(int index, T value);
     bool search(T value) const;
+    bool remove(const T& value);
+    T* find(const T& value);
+    const T* find(const T& value) const;
     int size() const;
     bool isEmpty() const;
     void print() const;
     void clear();
 
 };
+#include "../src/linked_list/linked_list.tpp"
 
 #endif

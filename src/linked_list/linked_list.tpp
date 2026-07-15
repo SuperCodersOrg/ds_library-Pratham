@@ -1,7 +1,8 @@
-#include "collections-library\include\linked_list.h"
+#include "../include/linked_list.h"
 #include <cstdlib>     
 #include <stdexcept>
 #include <new>
+#include <iostream>
 
 // default constructor
 template<typename T>
@@ -107,6 +108,25 @@ void LinkedList<T>::insertFront(T value){
     currentSize++;
 }
 
+//insertback
+template<typename T>
+void LinkedList<T>::insertBack(T value){
+    Node* newNode = (Node*) malloc(sizeof(Node));
+    if(newNode == nullptr){
+        throw "Memory allocation failed.";
+    }
+    new (newNode) Node(value);
+    if(head == nullptr){
+        head = newNode;
+        tail = newNode;
+    }
+    else{
+        tail->next = newNode;
+        tail = newNode;
+    }
+    currentSize++;
+}
+
 // deleteFront(T value)
 template<typename T>
 void LinkedList<T>::deleteFront(){
@@ -124,7 +144,7 @@ void LinkedList<T>::deleteFront(){
     }
 }
 
-//insert
+//insert at index 
 template<typename T>
 void LinkedList<T>::insert(int index, T value){
     if(index < 0 || index > currentSize){
@@ -152,7 +172,7 @@ void LinkedList<T>::insert(int index, T value){
     currentSize++;
 }
 
-//insert(int index, T value)
+//search
 template<typename T>
 bool LinkedList<T>::search(T value) const{
     Node* current = head;
@@ -164,11 +184,68 @@ bool LinkedList<T>::search(T value) const{
     }
     return false;
 }
-// search
+// size()
 template<typename T>
 int LinkedList<T>::size() const{
     return currentSize;
 }
+
+
+//remove by value
+template<typename T>
+bool LinkedList<T>::remove(const T& value){
+    if(head == nullptr){
+        return false;
+    }
+    if(head->data == value){
+        deleteFront();
+        return true;
+    }
+    Node* current = head;
+    while(current->next != nullptr){
+        if(current->next->data == value){
+            Node* temp = current->next;
+            current->next = temp->next;
+            if(temp == tail){
+                tail = current;
+            }
+            temp->~Node();
+            free(temp);
+            currentSize--;
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+
+//find ,non const
+template<typename T>
+T* LinkedList<T>::find(const T& value){
+    Node* current = head;
+    while(current != nullptr){
+        if(current->data == value){
+            return &(current->data);
+        }
+        current = current->next;
+    }
+    return nullptr;
+}
+
+//find ,const
+template<typename T>
+const T* LinkedList<T>::find(const T& value) const{
+    Node* current = head;
+    while(current != nullptr){
+        if(current->data == value)
+        {
+            return &(current->data);
+        }
+        current = current->next;
+    }
+    return nullptr;
+}
+
 
 //size
 template<typename T>
