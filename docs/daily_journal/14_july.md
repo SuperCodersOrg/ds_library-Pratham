@@ -13,7 +13,8 @@ I repeatedly rebuilt the project, reconfigured CMake, and even modified include 
 
 ## Section 4 – Code Reference
 
-Installed and configured CMake, Google Test, and Valgrind in WSL. Wrote unit tests for `constructor`, `push()`, `insert()`, `remove()`, `get()`, `size()`, `isEmpty()`, and `clear()`. Verified all tests passed successfully and confirmed memory safety using Valgrind.
+Installed and configured CMake, Google Test, and Valgrind in WSL.
+Wrote unit tests for `constructor`, `push()`, `insert()`, `remove()`, `get()`, `size()`, `isEmpty()`, and `clear()`. Verified all tests passed successfully and confirmed memory safety using Valgrind.
 
 
 ---

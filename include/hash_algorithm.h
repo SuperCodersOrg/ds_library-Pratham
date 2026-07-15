@@ -5,10 +5,10 @@
 #include<string>
 
 namespace HashUtility{
-    size_t hashBytes(const void* data, size_t size);
+    inline size_t hashBytes(const void* data, size_t size);
 
     template<typename T>
-    void combineHash(size_t& currentHash, const T& value);
+    inline void combineHash(size_t& currentHash, const T& value);
 }
 
 template <typename T>

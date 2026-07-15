@@ -1,7 +1,8 @@
 #ifndef HASH_MAP_H
 #define HASH_MAP_H
 
-// #include "dynamic_array.h"
+#include "linked_list.h"
+#include "dynamic_array.h" // for da
 #include "hash_algorithm.h"
 #include <cstddef>
 
@@ -14,10 +15,12 @@ private:
     {
         Key key;
         Value value;
-        Node* next;
+        // Node* next;
 
-        Node(const Key& key, const Value& value)
-            : key(key), value(value), next(nullptr){
+        Node(const Key& key, const Value& value): key(key), value(value){}
+        Node(const Key& key): key(key){} // thoda dekhna iska edge case hai value provide nahi ki 
+        bool operator==(const Node& other) const{
+            return key == other.key;
         }
     };
 
@@ -26,19 +29,21 @@ private:
     static constexpr float DEFAULT_MAX_LOAD_FACTOR = 0.75f;
 
     // Data Members
-    Node** buckets;
-    // DynamicArray<Node*> buckets;
+    // Node** buckets; //remove it for da 
+    // DynamicArray<Node*> buckets; // add it for da //remove for LL
+    DynamicArray< LinkedList<Node> > buckets; //add for DA and LL
+
     int bucketCount;
     int currentSize;
     float maxLoadFactor;
 
     // Hash Functions
     size_t hashKey(const Key& key) const;
-    size_t hashBytes(const void* data, size_t size) const;
+    // size_t hashBytes(const void* data, size_t size) const;
     
 
     // Helper Functions
-    Node* findNode(const Key& key) const;
+    // Node* findNode(const Key& key) const; // removed coz of LL
     void rehash(int newBucketCount);
     void freeMemory();
     void copyFrom(const HashMap& other);
@@ -69,6 +74,8 @@ public:
 };
 
 
-#include "../src/hashmap/hash_map_v2.tpp"
+// #include "../src/hashmap/hash_map_v2.tpp"
+// #include "../src/hashmap/hash_map.tpp"
+#include "../src/hashmap/hash_map_v3.tpp"
 
 #endif

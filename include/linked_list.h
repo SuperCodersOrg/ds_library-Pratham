@@ -8,10 +8,7 @@ private:
     struct Node{
         T data;
         Node* next;
-        Node(T value){
-            data = value;
-            next = nullptr;
-        }
+        Node(T value): data(value), next(nullptr){}
     };
 
     Node* head;
@@ -40,6 +37,31 @@ public:
     void print() const;
     void clear();
 
+    class Iterator{
+    private:
+        Node* current;
+    public:
+        Iterator(Node* node)
+            : current(node){}
+        T& operator*(){
+            return current->data;
+        }
+        T* operator->(){
+            return &(current->data);
+        }
+        Iterator& operator++(){
+            if(current != nullptr){
+                current = current->next;
+            }
+            return *this;
+        }
+        bool operator!=(const Iterator& other) const{
+            return current != other.current;
+        }
+    };
+
+    Iterator begin();
+    Iterator end();
 };
 #include "../src/linked_list/linked_list.tpp"
 

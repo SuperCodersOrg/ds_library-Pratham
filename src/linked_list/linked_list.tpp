@@ -279,4 +279,12 @@ void LinkedList<T>::clear(){
     currentSize = 0;
 }
 
+template<typename T>
+typename LinkedList<T>::Iterator LinkedList<T>::begin(){
+    return Iterator(head);
+}
 
+template<typename T>
+typename LinkedList<T>::Iterator LinkedList<T>::end(){
+    return Iterator(nullptr);
+}
