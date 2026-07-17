@@ -2,23 +2,20 @@
 #define HASH_MAP_H
 
 #include "linked_list.h"
-#include "dynamic_array.h" // for da
+#include "dynamic_array.h" 
 #include "hash_algorithm.h"
 #include <cstddef>
 
 template <typename Key, typename Value>
-class HashMap
-{
+class HashMap{
 private:
 
-    struct Node
-    {
+    struct Node{
         Key key;
         Value value;
-        // Node* next;
 
         Node(const Key& key, const Value& value): key(key), value(value){}
-        Node(const Key& key): key(key){} // thoda dekhna iska edge case hai value provide nahi ki 
+        Node(const Key& key): key(key){} // have to see it again for the edge cases 
         bool operator==(const Node& other) const{
             return key == other.key;
         }
@@ -29,9 +26,7 @@ private:
     static constexpr float DEFAULT_MAX_LOAD_FACTOR = 0.75f;
 
     // Data Members
-    // Node** buckets; //remove it for da 
-    // DynamicArray<Node*> buckets; // add it for da //remove for LL
-    DynamicArray< LinkedList<Node> > buckets; //add for DA and LL
+    DynamicArray< LinkedList<Node> > buckets; 
 
     int bucketCount;
     int currentSize;
@@ -39,11 +34,8 @@ private:
 
     // Hash Functions
     size_t hashKey(const Key& key) const;
-    // size_t hashBytes(const void* data, size_t size) const;
-    
 
     // Helper Functions
-    // Node* findNode(const Key& key) const; // removed coz of LL
     void rehash(int newBucketCount);
     void freeMemory();
     void copyFrom(const HashMap& other);
@@ -66,16 +58,17 @@ public:
     void remove(const Key& key);
     void clear();
 
+    Value& operator[](const Key& key);
+
     // Capacity
     int size() const;
     int capacity() const;
     bool isEmpty() const;
     float loadFactor() const;
+    
 };
 
 
-// #include "../src/hashmap/hash_map_v2.tpp"
-// #include "../src/hashmap/hash_map.tpp"
 #include "../src/hashmap/hash_map_v3.tpp"
 
 #endif

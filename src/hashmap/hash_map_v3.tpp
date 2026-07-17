@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <new>
 
-#include "../include/hash_map.h"
+// #include "../include/hash_map.h"
 
 //default constructor
 template <typename Key, typename Value>
@@ -193,4 +193,24 @@ HashMap<Key, Value>& HashMap<Key, Value>::operator=(const HashMap& other){
     }
 
     return *this;
+}
+
+//operator [] overloading 
+template <typename Key, typename Value>
+Value& HashMap<Key,Value>::operator[](const Key& key){
+    size_t hash = hashKey(key);
+    int bucketIndex = hash % bucketCount;
+    Node temp(key);
+    Node* node = buckets[bucketIndex].find(temp);
+    if (node != nullptr){
+        return node->value;
+    }
+    if ((float)(currentSize + 1) / bucketCount > maxLoadFactor){
+        rehash(bucketCount * 2);
+        hash = hashKey(key);
+        bucketIndex = hash % bucketCount;
+    }
+    buckets[bucketIndex].insertFront(Node(key, Value{}));
+    currentSize++;
+    return buckets[bucketIndex].begin()->value;
 }
