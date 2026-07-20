@@ -1,4 +1,4 @@
-#include "../include/linked_list.h"
+// #include "../include/linked_list.h"
 #include <cstdlib>     
 #include <stdexcept>
 #include <new>
@@ -277,6 +277,23 @@ void LinkedList<T>::clear(){
     head = nullptr;
     tail = nullptr;
     currentSize = 0;
+}
+
+//front
+template<typename T>
+T& LinkedList<T>::front(){
+    if (isEmpty()){
+        throw std::underflow_error("Linked List is empty");
+    }
+    return head->data;
+}
+
+template<typename T>
+const T& LinkedList<T>::front() const{
+    if (isEmpty()){
+        throw std::underflow_error("Linked List is empty");
+    }
+    return head->data;
 }
 
 template<typename T>

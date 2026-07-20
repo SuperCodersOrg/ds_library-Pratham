@@ -1,6 +1,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
-
+#include "../include/linked_list.h"
 #include <cstddef>
 template <typename T>
 class LinkedList{
@@ -36,6 +36,8 @@ public:
     bool isEmpty() const;
     void print() const;
     void clear();
+    T& front();
+    const T& front() const;
 
     class Iterator{
     private:

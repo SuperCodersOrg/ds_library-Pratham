@@ -69,6 +69,6 @@ public:
 };
 
 
-#include "../src/hashmap/hash_map_v3.tpp"
+#include "../src/hashmap/hash_map_v2.tpp"
 
 #endif
